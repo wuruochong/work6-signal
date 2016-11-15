@@ -12,6 +12,11 @@
 
 static void sighandler(int signo){
   if (signo == SIGINT){
+    umask(0000);
+    int f = open("sigmsg.txt", O_CREAT|O_RDWR|O_APPEND, 0644);
+    char msg[] = "main.c exited due to SIGINT signal\n";
+    write(f,msg,sizeof(msg));
+    close(f);
     printf("\nProgram exiting due to SIGINT signal\n");
     exit(0);
   }
